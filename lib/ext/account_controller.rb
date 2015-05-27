@@ -1,13 +1,13 @@
 class AccountController < ApplicationController
   def try_ssl_auth
-    session[:email] = request.env["SSL_CLIENT_S_DN_CN"]
-    if session[:email].nil? and request.env['HTTP_SSL_CLIENT_S_DN']
-      tmp = request.env['HTTP_SSL_CLIENT_S_DN'].scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)\//).flatten
-      session[:email] = tmp.first
+    session[:pki] = request.env["SSL_CLIENT_S_DN_CN"]
+    # if SSL_CLIENT_S_DN_CN is not set fallback to HTTP_SSL_CLIENT_S_DN
+    if session[:pki].nil? and request.env['HTTP_SSL_CLIENT_S_DN']
+      session[:pki] = request.env['HTTP_SSL_CLIENT_S_DN']
     end
-    if session[:email]
-      logger.info ">>> Login with certificate email: " + session[:email]
-      user = User.find_by_mail(session[:email])
+    if session[:pki]
+      logger.info ">>> Login with certificate common name: " + session[:pki]
+      user = User.find_by_login(session[:pki])
       # TODO: try to register on the fly
       unless user.nil?
       # Valid user
