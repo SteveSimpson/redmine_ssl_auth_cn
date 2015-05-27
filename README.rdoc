@@ -6,7 +6,7 @@ This redmine plugin enables authentication using SSL client certificates
 
 It's very simple
 
-* Install the plugin: ruby script/plugin install git://github.com/koke/redmine_ssl_auth.git
+* Install the plugin: ruby script/plugin install git://github.com/SteveSimpson/redmine_ssl_auth.git
 * Configure apache for SSL authentication (see Configuration)
 * Visit https://YOURSITE/login and it will login automatically
 
