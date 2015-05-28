@@ -41,8 +41,8 @@ Here are some example settings, but I suggest that you dig in a little:
         RequestHeader set X-Proxy-Forwarded-CN "%{SSL_CLIENT_S_DN_CN}s"
         
         SSLOptions +StdEnvVars
-
-	SSLVerifyDepth 3
+        
+        SSLVerifyDepth 3
         SSLVerifyClient required
         # SSLVerifyClient optional	
         #<Location /login/ssl>
