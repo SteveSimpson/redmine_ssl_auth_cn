@@ -4,26 +4,32 @@ This redmine plugin enables authentication using SSL client certificates
 
 == Usage
 
-It's very simple
-
-* Install the plugin: ruby script/plugin install git://github.com/SteveSimpson/redmine_ssl_auth.git
+* Install the plugin
 * Configure apache for SSL authentication (see Configuration)
 * Visit https://YOURSITE/login and it will login automatically
 
 == Notes 
 
-* This plugin expects the CN of the certificate to be your username 
-* A user with that username should exist in the database
+* This plugin expects the CN of the certificate to be your username, & CN must be unique
+* A user with that username should exist in the database or can register
 * This doesn't check any password, so implement certificate verification in Apache
 * You can visit /login?skip_ssl=1 to skip SSL authentication and do regular login
 
+=== Plugin Installation
+I can't really comment here. I checked out my code in: redmine/plugins/ and restarted apache.
+
+What Upstream said didn't work for me:
+         ruby script/plugin install git://github.com/koke/redmine_ssl_auth.git
+
+Redmine's comments
+http://www.redmine.org/projects/redmine/wiki/Plugins
+
 == Configuration
 
-Nice tutorial: http://www.vanemery.com/Linux/Apache/apache-SSL.html
+Tutorial: http://www.vanemery.com/Linux/Apache/apache-SSL.html
+(I haven't reviewed it myself. But there is a lot of good information.)
 
-This is not up to date, I will update later.... (Steve)
-
-In my case, I find this to be the configuration I wanted
+Here are some example settings, but I suggest that you dig in a little
 
         SSLEngine on
         SSLProtocol all 
@@ -35,32 +41,18 @@ In my case, I find this to be the configuration I wanted
 
         RequestHeader set X-Proxy-Forwarded-CN "%{SSL_CLIENT_S_DN_CN}s"
 
-        SetEnvIf User-Agent ".*MSIE.*" \
-                nokeepalive ssl-unclean-shutdown \
-                downgrade-1.0 force-response-1.0
-
-        SSLVerifyClient optional
-        SSLVerifyDepth 1
         SSLOptions +StdEnvVars
-        SSLOptions +FakeBasicAuth
-        
-        <Location /login/ssl>
-          SSLVerifyClient require
-        </Location>
 
-        <Location />
-           AuthName "eBox HQ"
-           AuthType Basic
-           AuthUserFile /etc/apache2/passwd/team
-           #Require valid-user
-        </Location>
+	SSLVerifyDepth 3
+        SSLVerifyClient required
+        # SSLVerifyClient optional	
+        #<Location /login/ssl>
+        #  SSLVerifyClient require
+        #</Location>
 
-By making <tt>SSLVerifyClient optional</tt> and commenting <tt>Require valid-user</tt>, it's possible to login without a certificate, using the regular login/password. A link is shown in the login form to require SSL authentication, see the <tt>Location /login/ssl</tt> section in the apache configuration.
 
-If you want to force your users to use certificates, change SSLVerifyClient to require and uncomment <tt>Require valid-user</tt>
+By making <tt>SSLVerifyClient optional</tt>, it's possible to login without a certificate, using the regular login/password. A link is shown in the login form to require SSL authentication, see the <tt>Location /login/ssl</tt> section in the apache configuration.
 
-== Questions
+If you want to force your users to use certificates, change SSLVerifyClient to require.
 
-To jbernal@ebox-platform.com
-
-Please, don't ask about apache configuration. I don't know much more than it's already here. Email about the plugin (bugs, patches, suggestions, ...) is welcome :)
+The <tt>RequestHeader</tt> line is absolutely required. That is what passes the cert to Redmine. Passenger was doing some sort of caching of ENV passed by Apache, but it did not cache the headers.
