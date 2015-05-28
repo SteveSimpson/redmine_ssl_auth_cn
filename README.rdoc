@@ -15,14 +15,15 @@ Original code by Jorge Bernal: https://github.com/koke/redmine_ssl_auth
 * This plugin expects the (common name) CN of the certificate to be your username, & CN must be unique
 * A user with that username should exist in the database or can register
 * This doesn't check any password, so implement certificate verification in Apache
+* Tested with Redmine 2.6.4
 * You can visit /login?skip_ssl=1 to skip SSL authentication and do regular login
 
 === Plugin Installation
-# cd redmine/plugins/
-# git clone https://github.com/SteveSimpson/redmine_ssl_auth.git
-# export RAILS_ENV=production
-# /path/to/rake redmine:plugins:migrate
-# service httpd restart
+1. cd redmine/plugins/
+1. git clone https://github.com/SteveSimpson/redmine_ssl_auth_cn.git
+1. export RAILS_ENV=production
+1. /path/to/rake redmine:plugins:migrate
+1. service httpd restart
 
 Redmine's comments: http://www.redmine.org/projects/redmine/wiki/Plugins
 
