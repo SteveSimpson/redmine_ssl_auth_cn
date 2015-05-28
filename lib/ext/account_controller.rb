@@ -1,13 +1,8 @@
 class AccountController < ApplicationController
   def try_ssl_auth
-    session[:pki] = request.env["SSL_CLIENT_S_DN_CN"]
-    # if SSL_CLIENT_S_DN_CN is not set fallback to HTTP_SSL_CLIENT_S_DN
-    if session[:pki].nil? and request.env['HTTP_SSL_CLIENT_S_DN']
-      session[:pki] = request.env['HTTP_SSL_CLIENT_S_DN']
-    end
-    if session[:pki]
-      logger.info ">>> Login with certificate common name: " + session[:pki]
-      user = User.find_by_login(session[:pki])
+    if request.env["SSL_CLIENT_S_DN_CN"] 
+      logger.info ">>> Login with certificate common name: " + request.env["SSL_CLIENT_S_DN_CN"]
+      user = User.find_by_login(request.env["SSL_CLIENT_S_DN_CN"])
       # TODO: try to register on the fly
       unless user.nil?
       # Valid user
