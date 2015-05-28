@@ -19,11 +19,16 @@ Original code by Jorge Bernal: https://github.com/koke/redmine_ssl_auth
 * You can visit /login?skip_ssl=1 to skip SSL authentication and do regular login
 
 === Plugin Installation
-1. cd redmine/plugins/
-1. git clone https://github.com/SteveSimpson/redmine_ssl_auth_cn.git
-1. export RAILS_ENV=production
-1. /path/to/rake redmine:plugins:migrate
-1. service httpd restart
+These are for my installation. Your mileage may vary, but should be adaptable.
+
+  cd redmine/plugins/
+  git clone https://github.com/SteveSimpson/redmine_ssl_auth_cn.git
+  chgrp -R apache redmine_ssl_auth_cn
+  find redmine_ssl_auth_cn -type f -print0 | xargs -0 chmod 640
+  find redmine_ssl_auth_cn -type d -print0 | xargs -0 chmod 750
+  export RAILS_ENV=production
+  /path/to/rake redmine:plugins:migrate
+  service httpd restart
 
 Redmine's comments: http://www.redmine.org/projects/redmine/wiki/Plugins
 
