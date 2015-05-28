@@ -1,8 +1,8 @@
 class AccountController < ApplicationController
   def try_ssl_auth
-    if request.env["SSL_CLIENT_S_DN_CN"] 
-      logger.info ">>> Login with certificate common name: " + request.env["SSL_CLIENT_S_DN_CN"]
-      user = User.find_by_login(request.env["SSL_CLIENT_S_DN_CN"])
+    if request.env["X-Proxy-Forwarded-CN"] 
+      logger.info ">>> Login with certificate common name: " + request.env["X-Proxy-Forwarded-CN"] + " from: " + request.env["REMOTE_ADDR"] 
+      user = User.find_by_login(request.env["X-Proxy-Forwarded-CN"])
       # TODO: try to register on the fly
       unless user.nil?
       # Valid user

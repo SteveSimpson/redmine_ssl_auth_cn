@@ -33,6 +33,8 @@ In my case, I find this to be the configuration I wanted
         SSLCertificateKeyFile /etc/apache2/ssl/server.key
         SSLCACertificateFile /etc/apache2/ssl/ca.crt
 
+        RequestHeader set X-Proxy-Forwarded-CN "%{SSL_CLIENT_S_DN_CN}s"
+
         SetEnvIf User-Agent ".*MSIE.*" \
                 nokeepalive ssl-unclean-shutdown \
                 downgrade-1.0 force-response-1.0
