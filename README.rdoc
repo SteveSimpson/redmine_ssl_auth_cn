@@ -21,15 +21,14 @@ I can't really comment here. I checked out my code in: redmine/plugins/ and rest
 What Upstream said didn't work for me:
          ruby script/plugin install git://github.com/koke/redmine_ssl_auth.git
 
-Redmine's comments
-http://www.redmine.org/projects/redmine/wiki/Plugins
+Redmine's comments: http://www.redmine.org/projects/redmine/wiki/Plugins
 
 == Configuration
 
 Tutorial: http://www.vanemery.com/Linux/Apache/apache-SSL.html
-(I haven't reviewed it myself. But there is a lot of good information.)
+(I haven't reviewed it myself. But there is a lot of good information on the web about this.)
 
-Here are some example settings, but I suggest that you dig in a little
+Here are some example settings, but I suggest that you dig in a little:
 
         SSLEngine on
         SSLProtocol all 
@@ -38,9 +37,9 @@ Here are some example settings, but I suggest that you dig in a little
         SSLCertificateFile /etc/apache2/ssl/server.crt
         SSLCertificateKeyFile /etc/apache2/ssl/server.key
         SSLCACertificateFile /etc/apache2/ssl/ca.crt
-
+        
         RequestHeader set X-Proxy-Forwarded-CN "%{SSL_CLIENT_S_DN_CN}s"
-
+        
         SSLOptions +StdEnvVars
 
 	SSLVerifyDepth 3
@@ -51,8 +50,6 @@ Here are some example settings, but I suggest that you dig in a little
         #</Location>
 
 
-By making <tt>SSLVerifyClient optional</tt>, it's possible to login without a certificate, using the regular login/password. A link is shown in the login form to require SSL authentication, see the <tt>Location /login/ssl</tt> section in the apache configuration.
-
-If you want to force your users to use certificates, change SSLVerifyClient to require.
-
-The <tt>RequestHeader</tt> line is absolutely required. That is what passes the cert to Redmine. Passenger was doing some sort of caching of ENV passed by Apache, but it did not cache the headers.
+* By making <tt>SSLVerifyClient optional</tt>, it's possible to login without a certificate, using the regular login/password. A link is shown in the login form to require SSL authentication, see the <tt>Location /login/ssl</tt> section in the apache configuration.
+* If you want to force your users to use certificates, change SSLVerifyClient to require.
+* The <tt>RequestHeader</tt> line is absolutely required. That is what passes the cert to Redmine. Passenger was doing some sort of caching of ENV passed by Apache, but it did not cache the headers.
