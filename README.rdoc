@@ -8,7 +8,7 @@ Original code by Jorge Bernal: https://github.com/koke/redmine_ssl_auth
 
 * Install the plugin
 * Configure apache for SSL authentication (see Configuration)
-* Visit https://YOURSITE/login and it will login automatically
+* Visit https://YOURSITE/login/ssl and it will login automatically
 
 == Notes 
 
