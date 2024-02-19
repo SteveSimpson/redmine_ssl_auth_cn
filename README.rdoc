@@ -15,7 +15,7 @@ Original code by Jorge Bernal: https://github.com/koke/redmine_ssl_auth
 * This plugin expects the (common name) CN of the certificate to be your username, & CN must be unique
 * A user with that username should exist in the database or can register
 * This doesn't check any password, so implement certificate verification in Apache
-* Tested with Redmine 2.6.4, 3.3.0
+* Tested with Redmine 5.0
 * (c) 2016 Steve Simpson, Licensed under GLPv2
 
 === Plugin Installation
